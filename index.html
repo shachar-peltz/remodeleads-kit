@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>RemodeLeads · ערכת מכירה</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
+<style>
+/* Layout: navy hero band, then a single column of numbered sections; brand navy + orange from the logo */
+:root{
+  --navy:#16263D; --navy-2:#1F3352; --ink:#16202C; --muted:#5A6676; --line:#DCE2EA;
+  --bg:#F4F6F9; --card:#FFFFFF; --accent:#EC8A2E; --accent-ink:#A8530F; --ok:#1E7A4C; --ok-soft:#E3F3EA;
+  --display:"Plus Jakarta Sans","Heebo",system-ui,sans-serif; --body:"Heebo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+.hero{background:var(--navy);color:#EEF2F7;padding:28px 0 56px}
+.hero .top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.hero .top img{height:52px;width:auto}
+.hero .tag{font-size:13px;color:#AFC0D6;border:1px solid #33496A;border-radius:999px;padding:4px 12px}
+.hero h1{font-family:var(--body);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.15;margin:40px 0 12px;text-wrap:balance}
+.hero h1 span{color:var(--accent)}
+.hero p{margin:0;max-width:60ch;color:#C8D3E2;font-size:17px}
+.offer{margin-top:-32px}
+.offer .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:720px){.offer .grid{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(22,38,61,.06)}
+.stat b{display:block;font-family:var(--display);font-size:30px;color:var(--navy);direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.offer p.note{margin:14px 2px 0;color:var(--muted);font-size:15px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 8px}
+nav.toc a{text-decoration:none;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;color:var(--ink)}
+nav.toc a:hover{border-color:var(--accent)}
+section.block{margin:40px 0;scroll-margin-top:16px}
+.bh{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.bh .n{font-family:var(--display);font-size:15px;font-weight:800;color:var(--accent-ink);direction:ltr}
+.bh h2{margin:0;font-size:24px;font-weight:800}
+.bh p{margin:0;color:var(--muted);font-size:15px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+a.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;transition:border-color .15s, transform .15s}
+a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+a.card:focus-visible,a.cta:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.card .kind{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent-ink)}
+.card .t{font-weight:800;font-size:17px;color:var(--navy)}
+.card .d{font-size:14px;color:var(--muted)}
+.card .go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:700;color:var(--navy)}
+.callout{background:#FFF4E8;border-right:4px solid var(--accent);border-radius:10px;padding:12px 16px;font-size:15px;margin-bottom:12px}
+.plain{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.plain b{color:var(--navy)}
+.feature{background:var(--navy);color:#EEF2F7;border-radius:18px;padding:28px;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center}
+@media (max-width:720px){.feature{grid-template-columns:1fr}}
+.feature h3{margin:0 0 8px;font-size:24px}
+.feature p{margin:0;color:#C8D3E2}
+.feature ul{margin:12px 0 0;padding-inline-start:20px;color:#C8D3E2;font-size:15px}
+a.cta{display:inline-flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;background:var(--accent);color:#1B1206;font-weight:800;border-radius:12px;padding:14px 22px;font-size:17px}
+footer{border-top:1px solid var(--line);margin-top:56px;padding:20px 0 40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (prefers-reduced-motion:reduce){a.card{transition:none}a.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="top">
+      <img src="logo-white.png" alt="RemodeLeads">
+      <span class="tag">ערכת קליטה · נציגת מכירות</span>
+    </div>
+    <h1>ברוכה הבאה ל-RemodeLeads.<br>כל מה שצריך כדי <span>למכור את ההצעה הבלעדית</span>.</h1>
+    <p>למי מוכרים, מה מוכרים, איך נשמעת שיחה טובה, ומה מראים לקבלן. כל החומרים במקום אחד.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="offer">
+    <div class="grid">
+      <div class="stat"><b>100%</b><span>בלעדי לקבלן, לא משותף ולא נמכר הלאה</span></div>
+      <div class="stat"><b>$2,000</b><span>דמי הקמה חד-פעמיים</span></div>
+      <div class="stat"><b>$200</b><span>לכל פגישה שהתקיימה</span></div>
+      <div class="stat"><b>$0</b><span>על no-show</span></div>
+    </div>
+    <p class="note">תקציב הפרסום משולם ישירות לחשבון המודעות של הקבלן, בלי עמלה. אנחנו מקימים ומריצים את הקמפיינים, מוקד חי מסנן כל ליד, וכל פגישה מאושרת פעמיים: יום לפני ובבוקר הפגישה.</p>
+  </div>
+
+  <nav class="toc" aria-label="תוכן">
+    <a href="#start">מתחילים כאן</a><a href="#calls">הקלטות</a><a href="#crm">CRM</a><a href="#offer">השירות והמחיר</a><a href="#results">תוצאות</a><a href="#proposals">הצעות מחיר</a>
+  </nav>
+
+  <section class="block" id="start">
+    <div class="bh"><span class="n">00</span><h2>מתחילים כאן</h2></div>
+    <div class="cards">
+      <a class="card" href="https://docs.google.com/document/d/1TRkjbPuuez-l69KRu8lNgFVEXqr5oF1m-JSuoeapraw/edit" target="_blank" rel="noopener"><span class="kind">GOOGLE DOC</span><span class="t">ICP – הלקוח האידיאלי שלנו</span><span class="d">למי מוכרים, איך מזהים לקוח מתאים, איפה מוצאים אותו ואיך עונים להתנגדויות.</span><span class="go">לפתוח ←</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="calls">
+    <div class="bh"><span class="n">01</span><h2>הקלטות שיחות מכירה</h2></div>
+    <div class="callout">חלק מהשיחות הוקלטו כשההצעה עוד הייתה בלי דמי הקמה. לומדים מהן את המבנה ואת הטיפול בהתנגדויות, ולגבי מחיר סומכים רק על ההצעה העדכנית.</div>
+    <div class="cards">
+      <a class="card" href="https://drive.google.com/file/d/1o48AaQQ-tiq0dHL4-QAbMunY3K2YTNuv/view" target="_blank" rel="noopener"><span class="kind">שיחת דמו</span><span class="t">Alicia Barrera</span><span class="d">סיכום הצורך, הצגת מסך והתהליך המלא.</span><span class="go">לצפות ←</span></a>
+      <a class="card" href="https://drive.google.com/file/d/1MzpwcGOraIkGVhHo6EVEwvnygw0BKhEG/view" target="_blank" rel="noopener"><span class="kind">שיחת דמו</span><span class="t">Rickey Baldwin</span><span class="d">ההתנגדות "שילמנו על לידים בעבר ועבדו עלינו".</span><span class="go">לצפות ←</span></a>
+      <a class="card" href="https://drive.google.com/file/d/1_mrzga1KPzmH7bA2r7Tk3CPmOkzdWbhK/view" target="_blank" rel="noopener"><span class="kind">קו בלעדי</span><span class="t">Walter</span><span class="d">הצגת הקו הבלעדי ללקוח קיים, אוקטובר 2026.</span><span class="go">לצפות ←</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="crm">
+    <div class="bh"><span class="n">02</span><h2>CRM</h2></div>
+    <div class="plain">אנחנו עובדים ב-<b>GoHighLevel</b>. שם משתמש, פייפליין ייעודי וסיסמה נשלחו אלייך בפרטי.</div>
+  </section>
+
+  <section class="block" id="offer">
+    <div class="bh"><span class="n">03</span><h2>השירות והמחיר</h2></div>
+    <div class="cards">
+      <a class="card" href="https://drive.google.com/file/d/1G8M0Q_jJkras47RVpUwzhi5LDegVBdUy/view" target="_blank" rel="noopener"><span class="kind">PDF · דוגמה</span><span class="t">Kitchen Proposal</span><span class="d">דוגמה להצעה מלאה ללקוח: מה הוא מקבל, איך זה עובד, מחיר ודוגמת החזר השקעה.</span><span class="go">לפתוח ←</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="results">
+    <div class="bh"><span class="n">04</span><h2>תוצאות קמפיינים</h2><p>מצגות באנגלית להצגה בשיחות</p></div>
+    <div class="cards">
+      <a class="card" href="https://docs.google.com/presentation/d/1U24ODfKUpYbPDiqWpdtgLqBAlRCyrqnaMSfweWgq4ME/edit" target="_blank" rel="noopener"><span class="kind">CASE STUDY · מטבחים</span><span class="t">LA Kitchen Remodeler</span><span class="d">כ-$40K בחודש: 1,348 לידים, 269 פגישות, 67 עסקאות ו-$3.17M הכנסות ב-90 יום.</span><span class="go">לפתוח מצגת ←</span></a>
+      <a class="card" href="https://docs.google.com/presentation/d/184lRN7tCosk4J1jVgzwksTtAoyktGAVO8uAL28Fuau4/edit" target="_blank" rel="noopener"><span class="kind">תרחיש לדוגמה · גגות</span><span class="t">DFW Roofer</span><span class="d">כ-$15K בחודש: 112 פגישות, 36 גגות ו-$875K הכנסות ב-90 יום.</span><span class="go">לפתוח מצגת ←</span></a>
+      <a class="card" href="https://docs.google.com/presentation/d/1zTsaJzNO1NuzPyjcjblwlw2nnT-qg69QGWabpLysRbw/edit" target="_blank" rel="noopener"><span class="kind">תרחיש לדוגמה · לנדסקייפינג</span><span class="t">Phoenix Landscaper</span><span class="d">כ-$5K בחודש: 55 פגישות, 17 פרויקטים ו-$367K הכנסות ב-90 יום.</span><span class="go">לפתוח מצגת ←</span></a>
+      <a class="card" href="https://papaya-bathrooms.vercel.app/" target="_blank" rel="noopener"><span class="kind">דף נחיתה של לקוח</span><span class="t">Papaya Construction</span><span class="d">דף חי. אפשר לפתוח אותו בשיחה ולתת לקבלן לעבור על השאלון.</span><span class="go">לפתוח ←</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="proposals">
+    <div class="bh"><span class="n">05</span><h2>הצעות מחיר מעוצבות</h2></div>
+    <div class="feature">
+      <div>
+        <h3>מחולל הצעות מחיר</h3>
+        <p>ממלאים את פרטי הקבלן ומורידים הצעה ממותגת של שני עמודים, באנגלית, מוכנה לשליחה.</p>
+        <ul>
+          <li>24 תחומים: מטבחים, אמבטיות, גגות, ADU, בריכות, לנדסקייפ ועוד</li>
+          <li>תחזית חודשית לפי התקציב של הקבלן</li>
+          <li>PDF מוכן לשליחה בלחיצה אחת</li>
+        </ul>
+      </div>
+      <div><a class="cta" href="proposal.html">לפתוח את המחולל ←</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>RemodeLeads LLC · info@remodeleads.com · (323) 800-8381</span>
+    <span>עודכן 24.11.2026 · קישור לא נפתח? בקשי גישה משחר</span>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="logo.png">
+<title>RemodeLeads · מחולל הצעות מחיר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+/* Layout: form panel (Hebrew, RTL) beside two fixed Letter-size proposal pages (English); brand navy + orange from the logo */
+:root{
+  --bg:#EEF1F5; --panel:#FFFFFF; --ink:#16202C; --muted:#5B6776; --line:#D8DEE6; --field:#F7F9FB;
+  --accent:#E9822A; --accent-ink:#A8530F; --navy:#1C2E4A; --ok:#1E7A4C;
+  --ui:"Heebo",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151D; --panel:#17202B; --ink:#E6EBF1; --muted:#9AA6B4; --line:#2B3744; --field:#1E2935;
+  --accent:#F39A4C; --accent-ink:#F5B37A; --navy:#9FB8DA; --ok:#6FCF9B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151D; --panel:#17202B; --ink:#E6EBF1; --muted:#9AA6B4; --line:#2B3744; --field:#1E2935;
+  --accent:#F39A4C; --accent-ink:#F5B37A; --navy:#9FB8DA; --ok:#6FCF9B; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px}
+.app{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;align-items:start;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1360px;margin:0 auto}
+@media (max-width:980px){.app{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+@media (max-width:980px){.panel{position:static}}
+.panel h1{font-size:22px;margin:0;font-weight:700}
+.panel .sub{margin:-10px 0 0;color:var(--muted);font-size:14px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+legend{font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--accent-ink);padding:0;margin-bottom:6px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:grid;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;box-sizing:border-box;min-width:0}
+input[dir=ltr],textarea[dir=ltr]{text-align:left}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.actions{display:grid;gap:8px}
+button{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:10px;padding:12px 14px;cursor:pointer;background:var(--accent);color:#1B1206}
+button.secondary{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
+button[disabled]{opacity:.6;cursor:progress}
+.status{font-size:13px;color:var(--muted);min-height:18px;margin:0}
+.status.ok{color:var(--ok)}
+.preview{min-width:0;overflow-x:auto;display:grid;gap:20px;justify-content:center;padding-bottom:8px}
+
+/* ===== Proposal pages: always light, Letter 816x1056 ===== */
+.page{width:816px;height:1056px;box-sizing:border-box;background:#FFFFFF;color:#1A2433;font-family:"Inter",Arial,sans-serif;font-size:13px;line-height:1.5;position:relative;overflow:hidden;box-shadow:0 2px 14px rgba(20,30,45,.16)}
+.page .band{background:#1C2E4A;color:#F4F6F9;padding:40px 56px 36px;display:grid;gap:18px}
+.page .top{display:flex;justify-content:space-between;align-items:center}
+.page .top .logo{width:150px;height:68px;object-fit:contain;background:#FFFFFF;border-radius:8px;padding:6px 10px}
+.page .top .meta{text-align:right;font-size:12px;color:#C3CEDD;line-height:1.6}
+.page .eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;color:#F2A05A;margin:0}
+.page h1{font-family:"Plus Jakarta Sans",Arial,sans-serif;font-size:34px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.5px}
+.page .lede{margin:0;font-size:14px;color:#D5DEEA;max-width:600px}
+.page .body{padding:30px 56px;display:grid;gap:24px}
+.page h2{font-family:"Plus Jakarta Sans",Arial,sans-serif;font-size:18px;margin:0 0 10px;color:#1C2E4A;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{border:1px solid #DCE2EA;border-radius:10px;padding:14px 16px}
+.stat b{display:block;font-family:"Plus Jakarta Sans",Arial,sans-serif;font-size:26px;color:#1C2E4A;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:#5A6676}
+.gets{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px}
+.get{border-top:3px solid #E9822A;padding-top:8px}
+.get strong{display:block;font-size:13.5px;color:#1C2E4A}
+.get span{color:#4F5B6A;font-size:12.5px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stepx{background:#F3F5F8;border-radius:10px;padding:12px 14px}
+.stepx i{font-style:normal;font-family:"Plus Jakarta Sans",Arial,sans-serif;font-weight:800;color:#E9822A;font-size:16px}
+.stepx strong{display:block;color:#1C2E4A;font-size:13px;margin:2px 0}
+.stepx span{font-size:12px;color:#4F5B6A}
+table.inv{width:100%;border-collapse:collapse;font-size:13px}
+table.inv th{text-align:left;font-size:11px;letter-spacing:.08em;color:#5A6676;font-weight:700;padding:6px 0;border-bottom:1px solid #DCE2EA}
+table.inv td{color:#1A2433;font-size:13px;padding:9px 0;border-bottom:1px solid #EEF1F5;vertical-align:top}
+table.inv td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#1C2E4A;white-space:nowrap;padding-left:16px}
+table.inv td small{display:block;color:#5A6676;font-size:11.5px}
+.proj{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.proj div{background:#F3F5F8;border-radius:10px;padding:12px 14px}
+.proj b{display:block;font-family:"Plus Jakarta Sans",Arial,sans-serif;font-size:20px;color:#1C2E4A;font-variant-numeric:tabular-nums}
+.proj span{font-size:11.5px;color:#5A6676}
+.proj .hot{background:#1C2E4A}
+.proj .hot b{color:#FFFFFF}
+.proj .hot span{color:#C3CEDD}
+.fine{font-size:11px;color:#6A7686;margin:8px 0 0}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.next div{border:1px solid #DCE2EA;border-radius:10px;padding:12px 14px}
+.next strong{display:block;color:#1C2E4A}
+.next span{font-size:12px;color:#4F5B6A}
+.notes{background:#FFF6EE;border-left:3px solid #E9822A;padding:10px 14px;border-radius:6px;font-size:12.5px;color:#3B4654;white-space:pre-wrap}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:4px}
+.sign div{border-top:1px solid #9AA6B4;padding-top:6px;font-size:11.5px;color:#5A6676}
+.foot{position:absolute;left:56px;right:56px;bottom:28px;display:flex;justify-content:space-between;font-size:11px;color:#6A7686;border-top:1px solid #E3E8EE;padding-top:10px}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <form class="panel" id="form" dir="rtl" lang="he" autocomplete="off">
+    <a href="index.html" style="font-size:13px;color:var(--muted);text-decoration:none">→ חזרה לערכת המכירה</a>
+    <h1>מחולל הצעות מחיר</h1>
+    <p class="sub">ממלאים את הפרטים, וההצעה באנגלית מתעדכנת מימין. בסוף מורידים PDF מעוצב.</p>
+
+    <fieldset>
+      <legend>הלקוח</legend>
+      <label>שם החברה<input id="company" dir="ltr" value="Summit Kitchen &amp; Bath"></label>
+      <div class="row">
+        <label>איש קשר<input id="contact" dir="ltr" value="Mike Johnson"></label>
+        <label>עיר / אזור<input id="market" dir="ltr" value="San Diego, CA"></label>
+      </div>
+      <label>תחום
+        <select id="service">
+          <optgroup label="שיפוץ פנים">
+            <option value="kitchen">Kitchen remodeling</option>
+            <option value="bath">Bathroom remodeling</option>
+            <option value="kitchenbath">Kitchen &amp; bath remodeling</option>
+            <option value="remodel">Full home remodeling</option>
+            <option value="basement">Basement finishing</option>
+            <option value="flooring">Flooring</option>
+          </optgroup>
+          <optgroup label="בנייה ותוספות">
+            <option value="adu">ADU construction</option>
+            <option value="addition">Home additions</option>
+            <option value="garage">Garage conversion</option>
+            <option value="newbuild">Custom home building</option>
+            <option value="foundation">Foundation repair</option>
+          </optgroup>
+          <optgroup label="חוץ ומעטפת">
+            <option value="roof">Roofing</option>
+            <option value="siding">Siding</option>
+            <option value="windows">Windows &amp; doors</option>
+            <option value="concrete">Concrete &amp; driveways</option>
+            <option value="painting">Exterior painting</option>
+          </optgroup>
+          <optgroup label="חצר ובחוץ">
+            <option value="land">Landscaping</option>
+            <option value="hardscape">Hardscaping</option>
+            <option value="pool">Pool construction</option>
+            <option value="deck">Decks &amp; patio covers</option>
+            <option value="outdoor">Outdoor living &amp; kitchens</option>
+            <option value="fence">Fencing</option>
+          </optgroup>
+          <optgroup label="מערכות">
+            <option value="hvac">HVAC replacement</option>
+            <option value="solar">Solar installation</option>
+          </optgroup>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>מחיר</legend>
+      <div class="row">
+        <label>דמי הקמה ($)<input id="setup" type="number" min="0" step="100" value="2000" dir="ltr"></label>
+        <label>לכל פגישה שהתקיימה ($)<input id="perSit" type="number" min="0" step="10" value="200" dir="ltr"></label>
+      </div>
+      <label>תקציב פרסום חודשי ($)<input id="budget" type="number" min="0" step="500" value="10000" dir="ltr"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>הנחות לתחזית</legend>
+      <div class="row">
+        <label>עלות פרסום לפגישה ($)<input id="adPerSit" type="number" min="1" step="10" value="300" dir="ltr"></label>
+        <label>אחוז סגירה (%)<input id="close" type="number" min="0" max="100" step="1" value="25" dir="ltr"></label>
+      </div>
+      <label>עסקה ממוצעת ($)<input id="avgJob" type="number" min="0" step="1000" value="50000" dir="ltr"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>פרטים נוספים</legend>
+      <div class="row">
+        <label>תאריך ההצעה<input id="date" type="date" dir="ltr"></label>
+        <label>בתוקף (ימים)<input id="valid" type="number" min="1" step="1" value="14" dir="ltr"></label>
+      </div>
+      <div class="row">
+        <label>שם הנציגה<input id="rep" dir="ltr" placeholder="Your name"></label>
+        <label>טלפון / מייל<input id="repContact" dir="ltr" placeholder="(323) 800-8381"></label>
+      </div>
+      <label>הערה ללקוח (לא חובה)<textarea id="notes" rows="3" dir="ltr" placeholder="e.g. Launch date, special terms"></textarea></label>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" id="pdf">הורדת PDF</button>
+      <button type="button" class="secondary" id="reset">איפוס לברירת מחדל</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <div class="preview" dir="ltr" lang="en" aria-label="Proposal preview">
+    <!-- Page 1 -->
+    <section class="page" id="p1">
+      <div class="band">
+        <div class="top">
+          <img class="logo" src="logo.png" alt="RemodeLeads">
+          <div class="meta"><div>Proposal <span data-k="pid"></span></div><div data-k="dateText"></div><div>Valid until <span data-k="validText"></span></div></div>
+        </div>
+        <p class="eyebrow">EXCLUSIVE APPOINTMENT PROGRAM</p>
+        <h1>Prepared for <span data-k="company"></span></h1>
+        <p class="lede">Confirmed, exclusive <span data-k="serviceNoun"></span> appointments in <span data-k="market"></span>. We find, qualify and confirm homeowners ready to start. You meet them, and pay only when you sit.</p>
+      </div>
+      <div class="body">
+        <div class="stats">
+          <div class="stat"><b>100%</b><span>Exclusive. Yours alone, never shared or resold.</span></div>
+          <div class="stat"><b data-k="perSitText"></b><span>Per appointment held. Charged only when you sit.</span></div>
+          <div class="stat"><b>$0</b><span>For no-shows. Homeowner not home, you owe nothing.</span></div>
+        </div>
+        <div>
+          <h2>What you get</h2>
+          <div class="gets">
+            <div class="get"><strong>Done for you, A to Z</strong><span>We connect your ad accounts, build and run the campaigns, and handle every call.</span></div>
+            <div class="get"><strong>A live call center on every lead</strong><span>Real people call and qualify each homeowner. Not a bot.</span></div>
+            <div class="get"><strong>Three filters, every time</strong><span>Owner on title. A serious scope, like <span data-k="scopeExample"></span>. Ready to start soon.</span></div>
+            <div class="get"><strong>Confirmed twice</strong><span>The day before and the morning of. Arrival window and every decision-maker, in writing.</span></div>
+            <div class="get"><strong>Yours alone</strong><span>Your ad account, your leads. No other contractor ever sees them.</span></div>
+            <div class="get"><strong>Full visibility</strong><span>Every lead and its status in the CRM, from first call to appointment held.</span></div>
+          </div>
+        </div>
+        <div>
+          <h2>How it works</h2>
+          <div class="steps">
+            <div class="stepx"><i>1</i><strong>We launch</strong><span>Campaigns go live in your own ad account.</span></div>
+            <div class="stepx"><i>2</i><strong>We qualify</strong><span>Our call center screens every lead.</span></div>
+            <div class="stepx"><i>3</i><strong>We confirm</strong><span>Day before and morning of, in writing.</span></div>
+            <div class="stepx"><i>4</i><strong>You meet them</strong><span>Sit with the homeowners and close the job.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="foot"><span>RemodeLeads LLC · info@remodeleads.com · (323) 800-8381</span><span>Page 1 of 2</span></div>
+    </section>
+
+    <!-- Page 2 -->
+    <section class="page" id="p2">
+      <div class="body" style="padding-top:44px">
+        <div>
+          <h2>Your investment</h2>
+          <table class="inv">
+            <tr><th>ITEM</th><th style="text-align:right">AMOUNT</th></tr>
+            <tr><td>One-time setup<small>Accounts connected, campaigns built and launched.</small></td><td class="num" data-k="setupText"></td></tr>
+            <tr><td>Per appointment held<small>Charged only when you are sitting with the homeowner. No-shows are free.</small></td><td class="num" data-k="perSitText"></td></tr>
+            <tr><td>Monthly ad budget<small>Paid straight to your own ad account. No markup. Your call, and you can change it any month.</small></td><td class="num" data-k="budgetText"></td></tr>
+          </table>
+        </div>
+        <div>
+          <h2>What a month could look like</h2>
+          <div class="proj">
+            <div><b data-k="sits"></b><span>Appointments held</span></div>
+            <div><b data-k="jobs"></b><span>Jobs closed</span></div>
+            <div><b data-k="investText"></b><span>Your monthly cost (ads + fees)</span></div>
+            <div class="hot"><b data-k="revenueText"></b><span>Job revenue</span></div>
+          </div>
+          <p class="fine">Illustration, not a guarantee. Based on <span data-k="adPerSitText"></span> in ads per appointment held, a <span data-k="closeText"></span> close rate and a <span data-k="avgJobText"></span> average job. Every $1 you spend brings back about <b data-k="roiText"></b> in job revenue. The one-time setup fee is not included. Close rate and ad cost vary by contractor and market.</p>
+        </div>
+        <div id="notesWrap">
+          <h2>Notes</h2>
+          <div class="notes" data-k="notes"></div>
+        </div>
+        <div>
+          <h2>Next steps</h2>
+          <div class="next">
+            <div><strong>1. Say yes</strong><span>Approve this proposal.</span></div>
+            <div><strong>2. Kick off</strong><span>Setup fee, plus access to your ad account.</span></div>
+            <div><strong>3. We go live</strong><span>Confirmed appointments start landing on your calendar.</span></div>
+          </div>
+        </div>
+        <div>
+          <h2>Acceptance</h2>
+          <div class="sign">
+            <div><span data-k="company"></span> · Name, signature</div>
+            <div>Date</div>
+          </div>
+        </div>
+      </div>
+      <div class="foot"><span>Prepared by <span data-k="repLine"></span></span><span>Page 2 of 2</span></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var money = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+  var SERVICES = {
+    kitchen:{noun:'kitchen remodeling', scope:'a full kitchen', adPerSit:300, close:25, avgJob:50000},
+    bath:{noun:'bathroom remodeling', scope:'a full bathroom', adPerSit:250, close:30, avgJob:25000},
+    kitchenbath:{noun:'kitchen and bath remodeling', scope:'a kitchen plus a bathroom', adPerSit:320, close:25, avgJob:70000},
+    remodel:{noun:'full home remodeling', scope:'a whole-home remodel', adPerSit:400, close:20, avgJob:150000},
+    basement:{noun:'basement finishing', scope:'a full basement build-out', adPerSit:300, close:25, avgJob:45000},
+    flooring:{noun:'flooring', scope:'whole-home flooring', adPerSit:200, close:30, avgJob:12000},
+    adu:{noun:'ADU construction', scope:'a detached ADU', adPerSit:450, close:18, avgJob:180000},
+    addition:{noun:'home addition', scope:'a room addition', adPerSit:450, close:20, avgJob:120000},
+    garage:{noun:'garage conversion', scope:'a full garage conversion', adPerSit:350, close:22, avgJob:60000},
+    newbuild:{noun:'custom home building', scope:'a new custom home', adPerSit:600, close:12, avgJob:750000},
+    foundation:{noun:'foundation repair', scope:'a full foundation repair', adPerSit:300, close:30, avgJob:15000},
+    roof:{noun:'roofing', scope:'a full roof replacement', adPerSit:400, close:32, avgJob:24000},
+    siding:{noun:'siding', scope:'a full siding replacement', adPerSit:350, close:28, avgJob:22000},
+    windows:{noun:'window and door replacement', scope:'a whole-home window replacement', adPerSit:300, close:30, avgJob:20000},
+    concrete:{noun:'concrete and driveway', scope:'a new driveway', adPerSit:250, close:30, avgJob:12000},
+    painting:{noun:'exterior painting', scope:'a full exterior repaint', adPerSit:200, close:35, avgJob:9000},
+    land:{noun:'landscaping', scope:'a full backyard', adPerSit:280, close:30, avgJob:21000},
+    hardscape:{noun:'hardscaping', scope:'a paver patio and walkways', adPerSit:280, close:30, avgJob:30000},
+    pool:{noun:'pool construction', scope:'a new in-ground pool', adPerSit:450, close:22, avgJob:85000},
+    deck:{noun:'deck and patio cover', scope:'a new deck or patio cover', adPerSit:260, close:30, avgJob:25000},
+    outdoor:{noun:'outdoor living', scope:'an outdoor kitchen and living space', adPerSit:350, close:25, avgJob:55000},
+    fence:{noun:'fencing', scope:'a full-property fence', adPerSit:200, close:35, avgJob:9000},
+    hvac:{noun:'HVAC replacement', scope:'a full HVAC system', adPerSit:250, close:35, avgJob:14000},
+    solar:{noun:'solar installation', scope:'a full solar system', adPerSit:300, close:25, avgJob:30000}
+  };
+  var DEFAULTS = {company:'Summit Kitchen & Bath', contact:'Mike Johnson', market:'San Diego, CA', service:'kitchen', setup:2000, perSit:200, budget:10000, adPerSit:300, close:25, avgJob:50000, valid:14, notes:''};
+  var FIELDS = ['company','contact','market','service','setup','perSit','budget','adPerSit','close','avgJob','date','valid','rep','repContact','notes'];
+
+  function today(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+  function num(id){ var v=parseFloat($(id).value); return isFinite(v)&&v>=0 ? v : 0; }
+  function fmtDate(iso, addDays){
+    var p=(iso||today()).split('-'); var d=new Date(+p[0], +p[1]-1, +p[2]); d.setDate(d.getDate()+(addDays||0));
+    return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  }
+  function setAll(key, text){ document.querySelectorAll('[data-k="'+key+'"]').forEach(function(el){ el.textContent = text; }); }
+
+  function render(){
+    var s = SERVICES[$('service').value] || SERVICES.kitchen;
+    var budget=num('budget'), perSit=num('perSit'), adPerSit=Math.max(1,num('adPerSit')), close=Math.min(100,num('close'))/100, avg=num('avgJob');
+    var sits = Math.floor(budget/adPerSit);
+    var jobs = sits*close;
+    var invest = budget + sits*perSit;
+    var revenue = Math.round(jobs)*avg;
+    var roi = invest>0 ? revenue/invest : 0;
+    var company = $('company').value.trim() || 'Your Company';
+    setAll('company', company);
+    setAll('market', $('market').value.trim() || 'your market');
+    setAll('serviceNoun', s.noun);
+    setAll('scopeExample', s.scope);
+    setAll('perSitText', money.format(perSit));
+    setAll('setupText', money.format(num('setup')));
+    setAll('budgetText', money.format(budget)+' / mo');
+    setAll('adPerSitText', money.format(adPerSit));
+    setAll('closeText', Math.round(close*100)+'%');
+    setAll('avgJobText', money.format(avg));
+    setAll('sits', String(sits));
+    setAll('jobs', String(Math.round(jobs)));
+    setAll('investText', money.format(invest));
+    setAll('revenueText', money.format(revenue));
+    setAll('roiText', '$'+(Math.round(roi*10)/10));
+    setAll('dateText', fmtDate($('date').value,0));
+    setAll('validText', fmtDate($('date').value, Math.max(1,num('valid'))));
+    var initials = company.replace(/[^A-Za-z0-9 ]/g,'').split(/\s+/).filter(Boolean).map(function(w){return w[0];}).join('').slice(0,3).toUpperCase() || 'RL';
+    setAll('pid', '#'+initials+'-'+($('date').value||today()).replace(/-/g,'').slice(2));
+    var contact = $('contact').value.trim();
+    var rep = $('rep').value.trim(), repC = $('repContact').value.trim();
+    setAll('repLine', [rep||'RemodeLeads', repC].filter(Boolean).join(' · ') + (contact ? ' for '+contact : ''));
+    var notes = $('notes').value.trim();
+    $('notesWrap').hidden = !notes;
+    setAll('notes', notes);
+    saveLocal();
+  }
+
+  function saveLocal(){
+    try{ localStorage.setItem('rl-rep', JSON.stringify({rep:$('rep').value, repContact:$('repContact').value})); }catch(e){}
+  }
+  function loadLocal(){
+    try{ var v=JSON.parse(localStorage.getItem('rl-rep')||'null'); if(v){ $('rep').value=v.rep||''; $('repContact').value=v.repContact||''; } }catch(e){}
+  }
+
+  $('service').addEventListener('change', function(){
+    var s = SERVICES[this.value]; if(!s) return;
+    $('adPerSit').value=s.adPerSit; $('close').value=s.close; $('avgJob').value=s.avgJob; render();
+  });
+  FIELDS.forEach(function(id){ var el=$(id); el.addEventListener('input', render); el.addEventListener('change', render); });
+  $('reset').addEventListener('click', function(){
+    Object.keys(DEFAULTS).forEach(function(k){ $(k).value = DEFAULTS[k]; });
+    $('date').value = today(); render(); status('');
+  });
+
+  function status(t, ok){ var el=$('status'); el.textContent=t; el.className='status'+(ok?' ok':''); }
+
+  $('pdf').addEventListener('click', async function(){
+    var btn=this;
+    if(!window.html2canvas || !window.jspdf){ status('ספריית ה-PDF לא נטענה. רענני את העמוד ונסי שוב.'); return; }
+    btn.disabled=true; status('מכינה את ה-PDF…');
+    try{
+      if(document.fonts && document.fonts.ready){ await document.fonts.ready; }
+      var pdf = new window.jspdf.jsPDF({unit:'pt', format:'letter', compress:true});
+      var pages=[$('p1'),$('p2')];
+      for(var i=0;i<pages.length;i++){
+        var canvas = await window.html2canvas(pages[i], {scale:2, backgroundColor:'#FFFFFF', useCORS:true, logging:false});
+        if(i>0) pdf.addPage('letter','portrait');
+        pdf.addImage(canvas.toDataURL('image/jpeg',0.92), 'JPEG', 0, 0, 612, 792);
+      }
+      var safe = $('company').value.trim().replace(/[^A-Za-z0-9 &.,'-]+/g,'') || 'Client';
+      pdf.save('RemodeLeads Proposal - ' + safe + '.pdf');
+      status('ה-PDF ירד למחשב.', true);
+    }catch(e){
+      status('לא הצלחתי ליצור את ה-PDF. נסי שוב.');
+    }finally{ btn.disabled=false; }
+  });
+
+  $('date').value = today();
+  loadLocal();
+  render();
+})();
+</script>
+
+</body>
+</html>
